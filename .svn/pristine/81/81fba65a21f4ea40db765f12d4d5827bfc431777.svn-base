@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<database name="hdb" defaultIdMethod="native" defaultPhpNamingMethod="underscore">
+    <behavior name="timestampable" />
+    <table name="user" phpName="User">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="username" type="varchar" size="255" required="true" />
+        <column name="password" type="varchar" size="255" required="true" />
+        <column name="email" type="varchar" size="255" required="true" />
+    </table>
+    <table name="realtor" phpName="Realtor">
+        <behavior name="concrete_inheritance">
+            <parameter name="extends" value="user" />
+        </behavior>
+        <column name="full_name" type="varchar" size="255" required="true" />
+        <column name="nric" type="varchar" size="255" required="true" />
+        <column name="contact_number" type="varchar" size="255" required="true" />
+    </table>
+    <table name="normal_user" phpName="NormalUser">
+        <behavior name="concrete_inheritance">
+            <parameter name="extends" value="user" />
+        </behavior>
+        <column name="facebook_id" type="varchar" size="255"/>
+    </table>
+    
+    <table name="login_session" idMethod="native" phpName="LoginSession">
+        <column name="id" phpName="Id" type="INTEGER" primaryKey="true" autoIncrement="true" required="true" />
+        <column name="user_type" phpName="UserType" type="VARCHAR" size="255" required="true" />
+        <column name="user_id" phpName="UserId" type="INTEGER" required="true" />
+        <column name="session_id" phpName="SessionId" type="VARCHAR" size="255" required="true" />
+        <column name="session_key" phpName="SessionKey" type="VARCHAR" size="255" required="true" />
+        <column name="disabled" type="BOOLEAN" required="true" phpType="boolean" />
+    </table>
+    
+    <table name="hdb" idMethod="native" phpName="Hdb">
+        <column name="id" phpName="Id" type="INTEGER" autoIncrement="true" required="true" primaryKey="true" />
+        <column name="block" type="varchar" size="255" />
+        <column name="flat_type" type="varchar" />
+        <column name="town" type="varchar" size="255" primaryKey="true" />
+        <column name="street" type="varchar" size="255" />
+        <column name="flat_model" type="varchar" />
+        <index>
+            <index-column name="id" />
+        </index>
+        <unique>
+            <unique-column name="id"/>
+        </unique>
+    </table>
+    <table name="listing" idMethod="native" phpName="Listing">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="title" type="varchar" size="255" />
+        <column name="size" type="double" required="true" />
+        <column name="unit_number" type="varchar" size="10" required="true" />
+        <column name="price" type="double" required="true" />
+        <column name="description" type="varchar" size="1000" />
+        <column name="hdb_id" type="integer" required="true" />
+        <column name="realtor_id" type="integer" required="true" />
+        <column name="latitude" type="real" />
+        <column name="longitude" type="real" />
+        <foreign-key foreignTable="hdb" onDelete="cascade" onUpdate="cascade">
+            <reference local="hdb_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="realtor" onDelete="cascade" onUpdate="cascade">
+            <reference local="realtor_id" foreign="id" />
+        </foreign-key>
+    </table>
+    <table name="photo" idMethod="native" phpName="Photo">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="path" type="varchar" size="200" required="true" />
+        <column name="listing_id" type="integer" required="true" />
+        <foreign-key foreignTable="listing" onDelete="cascade" onUpdate="cascade">
+            <reference local="listing_id" foreign="id" />
+        </foreign-key>
+    </table>
+    <table name="watchlist" idMethod="native" phpName="Watchlist">
+        <column name="id" type="integer" required="true" primaryKey="true" autoIncrement="true" />
+        <column name="user_id" type="integer" required="true" />
+        <column name="listing_id" type="integer" required="true" />
+        <foreign-key foreignTable="user" onDelete="cascade" onUpdate="cascade">
+            <reference local="user_id" foreign="id" />
+        </foreign-key>
+        <foreign-key foreignTable="listing" onDelete="cascade" onUpdate="cascade">
+            <reference local="listing_id" foreign="id" />
+        </foreign-key>
+    </table>
+</database>

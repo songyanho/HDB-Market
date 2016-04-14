@@ -1,0 +1,9 @@
+<?php
+
+if (!defined('IN_CORE_SYSTEM')){die('INVALID DIRECT ACCESS');}
+
+$app->group('/property', function(){
+    $this->get('/view', function ($request, $response, $args){
+        return $this->view->render($response, 'map-view.html', []); 
+    })->setName(HDB::ROLE_NORMAL_USER.'#property@map.view');
+});

@@ -1,0 +1,161 @@
+{% include 'header-bar.html' %}
+<style>
+    #map-holder {
+        position: fixed;
+        right: 0;
+        padding: 0;
+    }
+    #map{
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<link href="js/plugins/fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+<div class="bg-white">
+    <div class="container">
+<div class="row">
+    <div class="col-xs-6">
+        <h3>Edit property listing<small>{{ listing.title }}</small></h3>
+        <hr />
+        <form id="newProperty" method="post" action="{{ path_for(constant('HdbCore::ROLE_REALTOR') ~ '#property@manager.edit', {'id': listing.id}) }}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="town" class="col-sm-2 control-label">Town</label>
+                <select class="form-control" readonly disabled="true">
+                   <option value="0">{{ hdb.town }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="block" class="col-sm-2 control-label">Block</label>
+                <select class="form-control" readonly disabled="true">
+                    <option value="0">{{ hdb.block }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="type" class="col-sm-2 control-label">Type</label>
+                <select class="form-control" readonly disabled="true">
+                    <option value="0">{{ hdb.flatType }}</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="model" class="col-sm-2 control-label">Model</label>
+                <select class="form-control" readonly disabled="true">
+                    <option value="0">{{ hdb.flatModel }}</option>
+                </select>
+            </div>
+            <input type="hidden" name="latitude" value="{{ listing.latitude }}" />
+            <input type="hidden" name="id" value="{{ listing.id }}" />
+            <input type="hidden" name="longitude" value="{{ listing.longitude }}" />
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control newProperty" name="title" id="title" value="{{ listing.title }}" placeholder="Title of listing" required="required">
+            </div>
+            <div class="form-group">
+                <label for="unitNumber">Unit number</label>
+                <input type="text" class="form-control newProperty" name="unitNumber" id="unitNumber" value="{{ listing.unitNumber }}" placeholder="Unit number" required="required">
+            </div>
+            <div class="form-group">
+                <label for="size">Size (Sqm)</label>
+                <input type="text" class="form-control newProperty" name="size" id="size" value="{{ listing.size }}" placeholder="Size" required="required">
+            </div>
+            <div class="form-group">
+                <label for="price">Price (SG$)</label>
+                <input type="text" class="form-control newProperty" name="price" id="price" value="{{ listing.price }}" placeholder="Price" required="required">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control newProperty" name="description" id="description" required="required" row="5">{{ listing.description }}</textarea>
+            </div>
+            <button type="submit" class="btn btn-default">Submit listing</button>
+        </form>
+    </div>
+    <div class="col-xs-5" id="map-holder">
+        <div id="map"></div>
+        <div id="chartContainer" style="width: 100%;">
+    </div>
+</div>
+    </div>
+</div>
+<script src="js/plugins/fileinput/js/plugins/canvas-to-blob.min.js" type="text/javascript"></script>
+<script src="js/plugins/fileinput/js/fileinput.min.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSzSxLsG1teBE0zbxCf0GcoRZfzZoNZR4&callback=initMap"></script>
+<script src="js/canvasjs.min.js"></script>
+<script>
+    window.map = null;
+    window.marker = null;
+    window.geocoder = null;
+    function initMap() {
+        window.map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: {{ listing.latitude }}, lng: {{ listing.longitude }}},
+            zoom: 11,
+            mapTypeId: google.maps.MapTypeId.TERRAIN
+        });
+        var position = {lat: {{ listing.latitude }}, lng: {{ listing.longitude }}};
+        window.map.setCenter(position);
+        window.map.setZoom(18);
+        window.marker = new google.maps.Marker({
+            position: position,
+            map: window.map,
+            title: '{{ 'Block ' ~ selectedBlock ~ ',' ~ selectedStreet }}',
+            draggable: false,
+        });
+    }
+    $(document).ready(function(){
+        $(window).resize(function(){
+            $('#map-holder').css('height', ($(window).height() - 100)*0.6+'px');
+            $('#chartContainer').css('height', ($(window).height() - 100)*0.4+'px');
+        });
+        $(window).resize();
+        var data = {
+            q: '{{ hdb.town ~ " " ~ hdb.block ~ " " ~ hdb.flatType ~ " " }}',
+            resource_id: '83b2fc37-ce8c-4df4-968b-370fd818138b', // the resource id
+        };
+        $.ajax({
+            url: 'https://data.gov.sg/api/action/datastore_search',
+            data: data,
+            success: function(data) {
+//                    console.log(data.result.records);
+//                    $("#chartContainer").CanvasJSChart().options.data.dataPoints = [];
+                var dataa = [];
+                if(data.result.total > 0){
+                    for(var i=0; i<data.result.total; i++){
+//                            $("#chartContainer").CanvasJSChart().options.data.dataPoints.push({
+//                                x: new Date(data.result.records[i].month),
+//                                y: data.result.records[i].resale_price
+//                            });
+                        dataa.push({
+//                                x: i+1,
+                            x: new Date(data.result.records[i].month),
+                            y: parseInt(data.result.records[i].resale_price)
+                        });
+                    }
+                }
+//                console.log(dataa);
+                dataa.sort(function(a,b) {return (a.x > b.x) ? 1 : ((b.x > a.x) ? -1 : 0);} );
+//                console.log(dataa);
+                var chart = new CanvasJS.Chart("chartContainer", { //Pass chart options
+                    title:{
+                        text: "History"
+                    },
+                    axisX:{
+                        valueFormatString: "MMM YYYY"
+                    },
+                    axisY: {
+                        maximum: 1000000,
+                        minimum: 400000,
+                        valueFormatString: "0#"
+                    },
+                    animationEnabled: true,
+                    data: [
+                    {
+                        type: "line", //change it to column, spline, line, pie, etc
+                        lineThickness: 2,
+                        dataPoints: dataa
+                    }
+                    ]
+                });
+                chart.render();
+            }
+        });
+    });
+</script>
+{% include 'footer-bar.html' %}

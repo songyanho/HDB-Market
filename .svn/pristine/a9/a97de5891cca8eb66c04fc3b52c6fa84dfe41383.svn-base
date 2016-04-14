@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <base href="{{baseHref}}" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>{% if title|length > 0 %}{{ title ~ ' | ' }}{% endif %}{{ maintitle }}</title>
+    
+    <script type="application/x-javascript">
+        addEventListener("load", function () {
+            setTimeout(hideURLbar, 0);
+        }, false);
+
+        function hideURLbar() {
+            window.scrollTo(0, 1);
+        }
+    </script>
+    <link href="css/style.css" rel='stylesheet' type='text/css' />
+    <!--webfonts-->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:700,300,600,800,400' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Marvel:400,700' rel='stylesheet' type='text/css'>
+    <!--//webfonts-->
+</head>
+
+<body>
+    <h1>hdb market</h1>
+    <div class="registration">
+        <div class="form-info">
+            <div {% if not error %} style="display:none;"{% endif %}>
+				<span>{{ msg }}</span>
+			</div>
+            <form action="{{ path_for(constant('HdbCore::ROLE_GUEST') ~ '#guest@register.normalUser') }}" method="POST">
+                <h2>Register User Account</h2>
+                <input type="email" class="text" name="email" placeholder="email" required="required" />
+                <input type="password" class="Password" name="password" placeholder="password" required="required" />
+                <input type="text" class="text" name="username" placeholder="username" required="required" />
+                <div class="btn">
+                    <a class="btn" href="{{ path_for(constant('HdbCore::ROLE_GUEST') ~ '#guest@login.login') }}">Login</a>
+                </div>
+                <br />
+                <div class="btn" style="margin: 0 30px;">
+                    <input type="submit" value="Register">
+                </div>
+                <div class="btn">
+                    <a class="btn" href="{{ path_for(constant('HdbCore::ROLE_GUEST') ~ '#guest@register.realtor') }}">Register as Realtor</a>
+                </div>
+            </form>
+            <div class="clear"> </div>
+        </div>
+        <div class="strip" style="margin-top:15px;"><span>OR</span></div>
+        <ul class="bottom-sc-icons">
+            <li>
+                <a href="{{ facebook }}"><img src="images/fbconnect.png"</a>
+            </li>
+        </ul>
+    </div>
+</body>
+
+</html>

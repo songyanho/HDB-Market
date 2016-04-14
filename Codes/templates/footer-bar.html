@@ -1,0 +1,70 @@
+        
+    {% if not sidebar %}</div>{% endif %}
+
+    <!-- Footer -->
+    <footer class="footer">
+        <strong>Happy Wannabees SCE NTU</strong> CZ2006 Software Engineering
+    </footer>
+    <!-- // Footer -->
+    {% if sidebar %}</div>{% endif %}
+    <!-- Inline Script for colors and config objects; used by various external scripts; -->
+    <script>
+        var colors = {
+            "danger-color": "#e74c3c",
+            "success-color": "#81b53e",
+            "warning-color": "#f0ad4e",
+            "inverse-color": "#2c3e50",
+            "info-color": "#2d7cb5",
+            "default-color": "#6e7882",
+            "default-light-color": "#cfd9db",
+            "purple-color": "#9D8AC7",
+            "mustard-color": "#d4d171",
+            "lightred-color": "#e15258",
+            "body-bg": "#f6f6f6"
+        };
+        var config = {
+            theme: "html",
+            skins: {
+                "default": {
+                    "primary-color": "#16ae9f"
+                }
+            }
+        };
+    </script>
+    <script src="js/vendor/bootstrap.js"></script>
+    <script src="js/vendor/breakpoints.js"></script>
+    <script src="js/vendor/jquery.nicescroll.js"></script>
+    <script src="js/vendor/isotope.pkgd.js"></script>
+    <script src="js/vendor/packery-mode.pkgd.js"></script>
+    <script src="js/vendor/jquery.grid-a-licious.js"></script>
+    <script src="js/vendor/jquery.cookie.js"></script>
+    <script src="js/vendor/jquery-ui.custom.js"></script>
+    <script src="js/vendor/jquery.hotkeys.js"></script>
+    <script src="js/vendor/handlebars.js"></script>
+    <script src="js/vendor/jquery.hotkeys.js"></script>
+    <script src="js/vendor/load_image.js"></script>
+    <script src="js/vendor/jquery.debouncedresize.js"></script>
+    <script src="js/vendor/forms/all.js"></script>
+    <script src="js/vendor/media/all.js"></script>
+    <script src="js/vendor/essentials.js"></script>
+    <script src="js/vendor/layout.js"></script>
+    <script src="js/vendor/sidebar.js"></script>
+    <script src="js/vendor/media.js"></script>
+    <script src="js/vendor/maps.js"></script>
+
+    <script src="js/vendor/main.js"></script>
+    {% if not hasMap %}
+    <script>
+        function loadScript() {
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = 'https://maps.googleapis.com/maps/api/js?v=3.exp&' +
+            'callback=initGoogleMaps';
+            document.body.appendChild(script);
+        }
+        window.onload = loadScript;
+    </script>
+    {% endif %}
+</body>
+
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html class="{{ topClass }}" lang="en" ng-app="hdb">
+
+<head>
+    <base href="{{baseHref}}" />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>{% if title|length > 0 %}{{ title ~ ' | ' }}{% endif %}{{ maintitle }}</title>
+    <link href="css/vendor/bootstrap.css" rel="stylesheet">
+    <link href="css/vendor/font-awesome.css" rel="stylesheet">
+    <link href="css/vendor/picto.css" rel="stylesheet">
+    <link href="css/vendor/material-design-iconic-font.css" rel="stylesheet">
+    <link href="css/vendor/datepicker3.css" rel="stylesheet">
+    <link href="css/vendor/jquery.minicolors.css" rel="stylesheet">
+    <link href="css/vendor/bootstrap-slider.css" rel="stylesheet">
+    <link href="css/vendor/railscasts.css" rel="stylesheet">
+    <link href="css/vendor/jquery-jvectormap.css" rel="stylesheet">
+    <link href="css/vendor/owl.carousel.css" rel="stylesheet">
+    <link href="css/vendor/slick.css" rel="stylesheet">
+    <link href="css/vendor/morris.css" rel="stylesheet">
+    <link href="css/vendor/ui.fancytree.css" rel="stylesheet">
+    <link href="css/vendor/daterangepicker-bs3.css" rel="stylesheet">
+    <link href="css/vendor/jquery.bootstrap-touchspin.css" rel="stylesheet">
+    <link href="css/vendor/select2.css" rel="stylesheet">
+    <link href="css/vendor/main.css" rel="stylesheet">
+    <link href="css/vendor/essentials.css" rel="stylesheet" />
+    <link href="css/vendor/layout.css" rel="stylesheet" />
+    <link href="css/vendor/sidebar.css" rel="stylesheet" />
+    <link href="css/vendor/sidebar-skins.css" rel="stylesheet" />
+    <link href="css/vendor/navbar.css" rel="stylesheet" />
+    <link href="css/vendor/media.css" rel="stylesheet" />
+    <link href="css/vendor/maps.css" rel="stylesheet" />
+    <link href="css/vendor/colors-buttons.css" rel="stylesheet" />
+    <link href="css/vendor/colors-text.css" rel="stylesheet" />
+    <script src="js/vendor/jquery.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+    <script src="js/app.js"></script>
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
+WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!-- If you don't need support for Internet Explorer <= 8 you can safely remove these -->
+    <!--[if lt IE 9]>
+<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+<![endif]-->
+
+</head>
+
+<body>
+    {% if sidebar %}<div class="st-container">{% endif %}
+    <nav class="navbar navbar-main navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-nav">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="./">HDB Market</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="main-nav">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="{{ path_for(constant('HdbCore::ROLE_GUEST') ~ '&'  ~ constant('HdbCore::ROLE_NORMAL_USER') ~ '&' ~ constant('HdbCore::ROLE_REALTOR') ~ '#public@map.view') }}">Properties</a>
+                    </li>
+                    <li>
+                        <a href="{{ path_for(constant('HdbCore::ROLE_GUEST') ~ '#public@realtor.list') }}">Realtors</a>
+                    </li>
+                </ul>
+                <form class="navbar-form navbar-left margin-none" method="post" action="property/view/search">
+                    <div class="search-1">
+                        <div class="input-group">
+                            <span class="input-group-addon"><i class="icon-search"></i></span>
+                            <input type="text" class="form-control form-control-w-150" placeholder="Search .." name="search">
+                        </div>
+                    </div>
+                </form>
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Login -->
+                    {% if userStatus == 0 %}
+                    <li class="dropdown">
+                        <a href="{{ path_for(constant('HdbCore::ROLE_GUEST') ~ '#guest@login.login') }}" class="dropdown-toggle">
+                            <i class="fa fa-fw fa-lock"></i> Login
+                        </a>
+                    </li>
+                    <!-- // END login -->
+                    <!-- Sign up -->
+                    <li class="dropdown">
+                        <a href="{{ path_for(constant('HdbCore::ROLE_GUEST') ~ '#guest@register.normalUser') }}" class="dropdown-toggle">
+                            <i class="fa fa-fw fa-plus"></i> User Sign Up
+                        </a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="{{ path_for(constant('HdbCore::ROLE_GUEST') ~ '#guest@register.realtor') }}" class="dropdown-toggle">
+                            <i class="fa fa-fw fa-plus"></i> Realtor Sign Up
+                        </a>
+                    </li>
+                    <!-- // END sign up -->
+                    {% else %}
+                    <!-- user -->
+                    <li class="dropdown user">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            <img src="images/avatar.png" alt="" class="img-circle" /> {{ loggedUser.username }}<span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            {% if loggedUser.role == constant('HdbCore::ROLE_REALTOR') %}
+                            <li><a href="{{ path_for(constant('HdbCore::ROLE_REALTOR') ~ '#property@manager.list') }}"><i class="fa fa-user"></i>Properties</a></li>
+                            {% else %}
+                            <li><a href="{{ path_for(constant('HdbCore::ROLE_NORMAL_USER') ~ '#watchlist@list') }}"><i class="fa fa-wrench"></i>Watchlist</a></li>
+                            {% endif %}
+                            <li><a href="{{ path_for(constant('HdbCore::ROLE_GUEST') ~ '#public@login.logout')}}"><i class="fa fa-sign-out"></i>Logout</a></li>
+                        </ul>
+                    </li>
+                    <!-- // END user -->
+                    {% endif %}
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+
+        </div>
+    </nav>
+
+    {% if not sidebar %}<div id="content">{% endif %}

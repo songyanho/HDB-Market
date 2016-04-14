@@ -1,0 +1,303 @@
+{% include 'header-bar.html' %}
+<div class="panel height-600 relative margin-none">
+    <div id="google-fs-realestate" data-toggle="google-maps" data-file="js/data/google_maps/markers-listing.json" class="maps-google-fs"></div>
+
+    <script id="real-estate-map-pop-1" type="text/x-handlebars-template">
+        <div class="padding-none full">
+            <div class="ribbon-heading text-h5 {{'{{ ribbon_mark_class }}'}} absolute leftinline margin-none">{{'{{ ribbon_mark_text }}'}}</div>
+            <div class="cover overlay cover-image-full margin-none">
+                <a href="{{ details_url }}'}}" class="thumb" data-height="150px">
+                    <img src="{{ image }}'}}" alt="image" class="img-responsive">
+                </a>
+            </div>
+            <div class="list-group margin-none">
+                <div class="list-group-item">
+                    <a href="{{'{{ details_url }}'}}" class="btn btn-primary btn-circle pull-right">
+                        <i class="fa fa-shopping-cart"></i>
+                    </a>
+                    <h4 class="margin-v-0-5">{{'{{ title }}'}}</h4>
+                    <p class="small">
+                        <span class="fa fa-fw fa-star text-yellow-800"></span>
+                        <span class="fa fa-fw fa-star text-yellow-800"></span>
+                        <span class="fa fa-fw fa-star text-yellow-800"></span>
+                        <span class="fa fa-fw fa-star-o text-yellow-800"></span>
+                        <span class="fa fa-fw fa-star-o text-yellow-800"></span>
+                    </p>
+                    <p>{{'{{ description }}'}}</p>
+                    <label class="label label-grey-100">&euro;{{'{{ price }}'}}</label>&nbsp;
+                    <small>
+
+        <i class="fa fa-fw icon-home-fill-1"></i> Agency
+
+      </small>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script id="real-estate-map-pop_home" type="text/x-handlebars-template">
+        <div class="padding-none">
+            <div class="ribbon-heading text-h5 {{'{{ ribbon_mark_class }}'}} absolute left inline margin-none">
+                {{'{{ ribbon_mark_text }}'}}
+            </div>
+            <div class="cover cover-image-full margin-none">
+                <a href="{{'{{ details_url }}'}}" class="thumb" data-height="150px">
+                    <img src="{{'{{ image }}'}}" alt="image" class="img-responsive">
+                </a>
+            </div>
+            <div class="text-center">
+                <h4 class="text-primary margin-bottom-none">{{'{{ title }}'}}</h4>
+                <p class="h5 text-muted margin-v-5-15">{{'{{ location }}'}}</p>
+            </div>
+        </div>
+    </script>
+
+    <script id="real-estate-map-pop_profile" type="text/x-handlebars-template">
+        <div class="text-center">
+            <p>
+                <img src="{{'{{ image }}'}}" alt="" class="img-circle" />
+            </p>
+            <h4><a href="{{'{{ details_url }}'}}" class="text-grey-700">{{'{{ name }}'}}</a></h4>
+            <a href="mailto:{{'{{ email }}'}}">{{'{{ email }}'}}</a>
+            <br/>
+            <p class="text-muted"><i class="fa fa-user fa-fw"></i>Agent <i class="fa fa-home fa-fw"></i>{{'{{ no_properties }}'}} Properties</p>
+        </div>
+    </script>
+
+    <script id="real-estate-map-pop_icon" type="text/x-handlebars-template">
+        <div>
+            <div class="text-center">
+                <div class="h1 text-grey-300">
+                    <i class="{{'{{ inner_icon }}'}}"></i>
+                </div>
+                <p><a href="{{'{{ details_url }}'}}" class="h4 text-primary">{{'{{ name }}'}}</a></p>
+                <p>{{'{{ location }}'}}</p>
+            </div>
+        </div>
+    </script>
+</div>
+
+<div class="bg-white">
+    <div class="container">
+
+        <div class="page-section">
+            <div class="text-center">
+                <i class="fa fa-home fa-5x text-grey-300"></i>
+                <h1 class="text-h2">Looking for a new house in the new year?</h1>
+                <hr/>
+                <p class="lead">Check out the local architecture, meet your would be neighbors, find real estate, homes for sale, properties for rent, school and neighborhood information and much more.</p>
+            </div>
+            <br/>
+
+            <div class="slick-basic slick-slider" data-items="5" data-items-lg="3" data-items-md="2" data-items-sm="2" data-items-xs="1">
+
+                <div class="item">
+                    <div class="panel panel-default relative">
+                        <div class="ribbon-heading text-h5 ribbon-primary inline left absolute margin-none">Sale</div>
+                        <div class="cover hover overlay margin-none">
+                            <img src="images/photodune-378874-real-estate-xs.jpg" alt="location" class="img-responsive" />
+                            <a href="front-property.html" class="overlay overlay-full overlay-bg-black overlay-hover">
+                                <span class="v-center">
+                <span class="btn btn-circle btn-white"><i class="fa fa-eye"></i></span>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="panel-body">
+                            <h4 class="margin-v-0-5">Property for sale</h4>
+                            <p class="small">
+                                <span class="fa fa-fw fa-star text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star-o text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star-o text-yellow-800"></span>
+                            </p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                            <span class="label label-grey-300">&euro;277,028.00</span>&nbsp;
+                            <i class="small fa fa-fw icon-home-fill-1" data-toggle="tooltip" data-title="Agency"></i>
+                            <a href="front-property.html" class="btn btn-primary btn-circle absolute bottom right"><i class="fa fa-shopping-cart"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="panel panel-default relative">
+                        <div class="ribbon-heading text-h5 ribbon-default inline margin-none left absolute">Sale</div>
+                        <div class="cover hover overlay margin-none">
+                            <img src="images/photodune-195203-houses-xs.jpg" alt="location" class="img-responsive" />
+                            <a href="front-property.html" class="overlay overlay-full overlay-bg-black overlay-hover">
+                                <span class="v-center">
+                <span class="btn btn-circle btn-white"><i class="fa fa-eye"></i></span>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="panel-body">
+                            <h4 class="margin-v-0-5">Property for sale</h4>
+                            <p class="small">
+                                <span class="fa fa-fw fa-star text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star-o text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star-o text-yellow-800"></span>
+                            </p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                            <span class="label label-grey-100">&euro;82,331.00</span>
+                            <i class="small fa fa-fw icon-home-fill-1" data-toggle="tooltip" data-title="Agency"></i>
+                            <a href="front-property.html" class="btn btn-primary btn-circle absolute bottom right"><i class="fa fa-shopping-cart"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="panel panel-default relative">
+                        <div class="ribbon-heading text-h5 ribbon-default inline margin-none left absolute">Sale</div>
+                        <div class="cover hover overlay margin-none">
+                            <img src="images/photodune-196089-house-xs.jpg" alt="location" class="img-responsive" />
+                            <a href="front-property.html" class="overlay overlay-full overlay-bg-black overlay-hover">
+                                <span class="v-center">
+                <span class="btn btn-circle btn-white"><i class="fa fa-eye"></i></span>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="panel-body">
+                            <h4 class="margin-v-0-5">Property for sale</h4>
+                            <p class="small">
+                                <span class="fa fa-fw fa-star text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star-o text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star-o text-yellow-800"></span>
+                            </p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                            <span class="label label-grey-100">&euro;81,662.00</span>
+                            <i class="small fa fa-fw icon-user-1" data-toggle="tooltip" data-title="Individual"></i>
+                            <a href="front-property.html" class="btn btn-primary btn-circle absolute bottom right"><i class="fa fa-shopping-cart"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="panel panel-default relative">
+                        <div class="ribbon-heading text-h5 ribbon-primary inline margin-none left absolute">Rent</div>
+                        <div class="cover hover overlay margin-none">
+                            <img src="images/photodune-197173-residential-home-xs.jpg" alt="location" class="img-responsive" />
+                            <a href="front-property.html" class="overlay overlay-full overlay-bg-black overlay-hover">
+                                <span class="v-center">
+                <span class="btn btn-circle btn-white"><i class="fa fa-eye"></i></span>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="panel-body">
+                            <h4 class="margin-v-0-5">Residential Home</h4>
+                            <p class="small">
+                                <span class="fa fa-fw fa-star text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star-o text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star-o text-yellow-800"></span>
+                            </p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                            <span class="label label-grey-100">&euro;132,021.00</span>
+                            <i class="small fa fa-fw icon-user-1" data-toggle="tooltip" data-title="Individual"></i>
+                            <a href="front-property.html" class="btn btn-primary btn-circle absolute bottom right"><i class="fa fa-shopping-cart"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="panel panel-default relative">
+                        <div class="ribbon-heading text-h5 ribbon-default inline margin-none left absolute">Sale</div>
+                        <div class="cover hover overlay margin-none">
+                            <img src="images/photodune-2238345-apartments-xs.jpg" alt="location" class="img-responsive" />
+                            <a href="front-property.html" class="overlay overlay-full overlay-bg-black overlay-hover">
+                                <span class="v-center">
+                <span class="btn btn-circle btn-white"><i class="fa fa-eye"></i></span>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="panel-body">
+                            <h4 class="margin-v-0-5">Apartments</h4>
+                            <p class="small">
+                                <span class="fa fa-fw fa-star text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star-o text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star-o text-yellow-800"></span>
+                            </p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                            <span class="label label-grey-100">&euro;187,285.00</span>
+                            <i class="small fa fa-fw icon-user-1" data-toggle="tooltip" data-title="Individual"></i>
+                            <a href="front-property.html" class="btn btn-primary btn-circle absolute bottom right"><i class="fa fa-shopping-cart"></i></a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="item">
+                    <div class="panel panel-default relative">
+                        <div class="ribbon-heading text-h5 ribbon-primary inline margin-none left absolute">Rent</div>
+                        <div class="cover hover overlay margin-none">
+                            <img src="images/photodune-3979102-superb-backyard-xs.jpg" alt="location" class="img-responsive" />
+                            <a href="front-property.html" class="overlay overlay-full overlay-bg-black overlay-hover">
+                                <span class="v-center">
+                <span class="btn btn-circle btn-white"><i class="fa fa-eye"></i></span>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="panel-body">
+                            <h4 class="margin-v-0-5">Superb Backyard</h4>
+                            <p class="small">
+                                <span class="fa fa-fw fa-star text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star-o text-yellow-800"></span>
+                                <span class="fa fa-fw fa-star-o text-yellow-800"></span>
+                            </p>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                            <span class="label label-grey-100">&euro;175,654.00</span>
+                            <i class="small fa fa-fw icon-home-fill-1" data-toggle="tooltip" data-title="Agency"></i>
+                            <a href="front-property.html" class="btn btn-primary btn-circle absolute bottom right"><i class="fa fa-shopping-cart"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- // END .owl-basic -->
+
+        </div>
+
+        <div class="page-section">
+            <section class="row gridalicious" data-toggle="gridalicious" data-width="300">
+                {% for listing in listings %}
+                <div class="panel panel-default relative">
+                    <div class="ribbon-heading h4 inline absolute left margin-none ribbon-primary">S$ {{ listing.price }}</div>
+                    <div class="cover hover overlay margin-none">
+                        <div class="overlay overlay-full overlay-bg-black">
+                            <div class="v-center">
+                                <h5 class="text-h4 margin-v-0-10 text-overlay text-uppercase">{{ listing.title }}</h5>
+                                <p class="text-h5">
+                                    <span class="fa fa-fw fa-star text-primary"></span>
+                                    <span class="fa fa-fw fa-star text-primary"></span>
+                                    <span class="fa fa-fw fa-star text-primary"></span>
+                                    <span class="fa fa-fw fa-star-o text-white"></span>
+                                    <span class="fa fa-fw fa-star-o text-white"></span>
+                                </p>
+                            </div>
+                        </div>
+                        <a href="{{ path_for(constant('HdbCore::ROLE_GUEST') ~ '#public@property.view', {'id': listing.id}) }}" class="overlay overlay-full overlay-bg-black overlay-hover">
+                            <span class="v-center">
+            <span class="btn btn-circle btn-white"><i class="fa fa-eye"></i></span>
+                            </span>
+                        </a>
+                        <a href="{{ path_for(constant('HdbCore::ROLE_GUEST') ~ '#public@property.view', {'id': listing.id}) }}">
+                            <img src="{{ listing.photos[0].path }}" alt="location" class="img-responsive" />
+                        </a>
+                    </div>
+                </div>
+                {% endfor %}
+            </section>
+            <br/>
+        </div>
+
+    </div>
+    <!-- // END .container -->
+
+</div>
+{% include 'footer-bar.html' %}

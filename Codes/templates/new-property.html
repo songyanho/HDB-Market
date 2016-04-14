@@ -1,0 +1,277 @@
+{% include 'header-bar.html' %}
+<style>
+    #map-holder {
+        position: fixed;
+        right: 0;
+        padding: 0;
+    }
+    #map{
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<link href="js/plugins/fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+<div class="bg-white">
+    <div class="container">
+<div class="row">
+    <div class="col-xs-6">
+        <h3>Add new property</h3>
+        <hr />
+        <form id="newProperty" method="post" action="{{ path_for(constant('HdbCore::ROLE_REALTOR') ~ '#property@manager.create') }}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="town" class="col-sm-2 control-label">Town</label>
+                <select class="form-control" name="town" required="required">
+                    <option value="0">Please select a town</option>
+                    {% for town in towns %}
+                    <option value="{{ town.town }}"{% if town.town == selectedTown %} selected{% endif %}>{{ '{{ "' ~ town.town ~ '" |titlecase }}' }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% if blocks %}
+            <div class="form-group">
+                <label for="block" class="col-sm-2 control-label">Block</label>
+                <select class="form-control" name="block" required="required">
+                    <option value="0">Please select a block</option>
+                    {% for block in blocks %}
+                    <option value="{{ block.block }}"{% if block.block == selectedBlock %} selected{% endif %}>{{ '{{ "' ~ block.block ~ '" |uppercase }}' }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+            {% if types %}
+            <div class="form-group">
+                <label for="type" class="col-sm-2 control-label">Type</label>
+                <select class="form-control" name="type" required="required">
+                    <option value="0">Please select a type</option>
+                    {% for type in types %}
+                    <option value="{{ type.flatType }}"{% if type.flatType == selectedType %} selected{% endif %}>{{ '{{ "' ~ type.flatType ~ '" |titlecase }}' }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+            {% if models %}
+            <div class="form-group">
+                <label for="model" class="col-sm-2 control-label">Model</label>
+                <select class="form-control" name="model" required="required">
+                    <option value="0">Please select a model</option>
+                    {% for model in models %}
+                    <option value="{{ model.flatModel }}">{{ '{{ "' ~ model.flatModel ~ '" |titlecase }}' }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            {% endif %}
+            {% if selectedType %}
+            <input type="hidden" name="latitude" value="0" />
+            <input type="hidden" name="longitude" value="0" />
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" class="form-control newProperty" name="title" id="title" placeholder="Title of listing" required="required">
+            </div>
+            <div class="form-group">
+                <label for="unitNumber">Unit number</label>
+                <input type="text" class="form-control newProperty" name="unitNumber" id="unitNumber" placeholder="Unit number" required="required">
+            </div>
+            <div class="form-group">
+                <label for="size">Size (Sqm)</label>
+                <input type="text" class="form-control newProperty" name="size" id="size" placeholder="Size" required="required">
+            </div>
+            <div class="form-group">
+                <label for="price">Price (SG$)</label>
+                <input type="text" class="form-control newProperty" name="price" id="price" placeholder="Price" required="required">
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control newProperty" name="description" id="description" required="required" row="5"></textarea>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Select File</label>
+                <input id="photo" name="photo[]" type="file" class="file" multiple data-show-upload="false" accept="image/*">
+            </div>
+            <button type="submit" class="btn btn-default">Submit listing</button>
+            {% endif %}
+        </form>
+    </div>
+    <div class="col-xs-5" id="map-holder">
+        <div id="map"></div>
+        <div id="chartContainer" style="width: 100%;">
+    </div>
+</div>
+    </div>
+</div>
+<script src="js/plugins/fileinput/js/plugins/canvas-to-blob.min.js" type="text/javascript"></script>
+<script src="js/plugins/fileinput/js/fileinput.min.js"></script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBSzSxLsG1teBE0zbxCf0GcoRZfzZoNZR4&callback=initMap"></script>
+<script src="js/canvasjs.min.js"></script>
+<script>
+    window.map = null;
+    window.marker = null;
+    window.geocoder = null;
+    function initMap() {
+        window.map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 1.352083, lng: 103.819836},
+            zoom: 11,
+            mapTypeId: google.maps.MapTypeId.TERRAIN
+        });
+        window.geocoder = new google.maps.Geocoder;
+        {% if selectedBlock %}
+        geocoder.geocode({
+            address: "{{ 'Block ' ~ selectedBlock ~ ' ' ~ selectedTown }}",
+            componentRestrictions: {
+                country: 'SG'
+            }
+        }, function(results, status) {
+            if(status !== google.maps.GeocoderStatus.OK)
+                return;
+            var result;
+            if(results.length == 1){
+                result = results[0];
+            }
+            if(results.length >= 1){
+                result = results[0];
+                for(var ii=0; ii<results.length; ii++){
+                    if(results[ii].types.indexOf("premise") >= 0){
+                        result = results[ii];
+                        break;
+                    }
+                }
+            }
+            var position = {lat: result.geometry.location.lat(), lng: result.geometry.location.lng()};
+            $('input[name="latitude"]').val(result.geometry.location.lat());
+            $('input[name="longitude"]').val(result.geometry.location.lng());
+            window.map.setCenter(position);
+            window.map.setZoom(18);
+            window.marker = new google.maps.Marker({
+                position: position,
+                map: window.map,
+                title: '{{ 'Block ' ~ selectedBlock ~ ',' ~ selectedStreet }}',
+                draggable: false,
+            });
+        });
+        {% endif %}
+    }
+    $(document).ready(function(){
+        $(window).resize(function(){
+            $('#map-holder').css('height', ($(window).height() - 100)*0.6+'px');
+            $('#chartContainer').css('height', ($(window).height() - 100)*0.4+'px');
+        });
+        $(window).resize();
+    });
+</script>
+<script>
+    $(document).ready(function(){
+        $('select').change(function(){
+            if($(this).val() == '0')
+                return;
+            if($(this).attr("name") == 'town'){
+                window.location.href = './property/new/'+$('select[name="town"]').val();
+            }else if($(this).attr("name") == 'block'){
+                window.location.href = './property/new/'+$('select[name="town"]').val()+'/'+$('select[name="block"]').val();
+            }else if($(this).attr("name") == 'type'){
+                window.location.href = './property/new/'+$('select[name="town"]').val()+'/'+$('select[name="block"]').val()+'/'+$('select[name="type"]').val();
+            }
+        });
+        $('form#newProperty').submit(function(){
+            var failed = false;
+            $('select').each(function(){
+                if($(this).val() == '0')
+                    failed = true;
+            });
+            $('input.newProperty').each(function(){
+                if($(this).val().length < 1)
+                    failed = true;
+            });
+            if($('textarea').val().length < 1)
+                failed = true;
+            return !failed;
+        });
+    });
+</script>
+{% if selectedType %}
+<script type="text/javascript">
+    $(document).ready(function(){
+//        $("#chartContainer").CanvasJSChart({ //Pass chart options
+//            title:{
+//                text: "Formatting Date"
+//            },
+//            axisX:{
+//                valueFormatString: "MMM"
+//            },
+//
+//            axisY: {
+//                valueFormatString: "0.0#"
+//            },
+//            data: [
+//            {
+//                type: "line", //change it to column, spline, line, pie, etc
+//                lineThickness: 2,
+//                dataPoints: [
+//                
+//                ]
+//            }
+//            ]
+//        });
+        $('select[name="model"]').change(function(){
+            var model = ''; //$('select[name="model"]').val() == 0 ? '' : $('select[name="model"]').val();
+            var data = {
+                q: '{{ selectedTown ~ " " ~ selectedBlock ~ " " ~ selectedType ~ " " }}',
+                resource_id: '83b2fc37-ce8c-4df4-968b-370fd818138b', // the resource id
+            };
+            $.ajax({
+                url: 'https://data.gov.sg/api/action/datastore_search',
+                data: data,
+                success: function(data) {
+//                    console.log(data.result.records);
+//                    $("#chartContainer").CanvasJSChart().options.data.dataPoints = [];
+                    var dataa = [];
+                    if(data.result.total > 0){
+                        for(var i=0; i<data.result.total; i++){
+//                            $("#chartContainer").CanvasJSChart().options.data.dataPoints.push({
+//                                x: new Date(data.result.records[i].month),
+//                                y: data.result.records[i].resale_price
+//                            });
+                            dataa.push({
+//                                x: i+1,
+                                x: new Date(data.result.records[i].month),
+                                y: parseInt(data.result.records[i].resale_price)
+                            });
+                        }
+                    }
+//                    console.log(dataa);
+                    dataa.sort(function(a,b) {return (a.x > b.x) ? 1 : ((b.x > a.x) ? -1 : 0);} );
+//                    console.log(dataa);
+                    var chart = new CanvasJS.Chart("chartContainer", { //Pass chart options
+                        title:{
+                            text: "History"
+                        },
+                        axisX:{
+                            valueFormatString: "MMM YYYY"
+                        },
+                        axisY: {
+                            maximum: 1000000,
+                            minimum: 400000,
+                            valueFormatString: "0#"
+                        },
+                        animationEnabled: true,
+                        data: [
+                        {
+                            type: "line", //change it to column, spline, line, pie, etc
+                            lineThickness: 2,
+                            dataPoints: dataa
+                        }
+                        ]
+                    });
+                    chart.render();
+                }
+            });
+        });
+        $('select[name="model"]').change();
+    });
+    
+</script>
+{% endif%}
+<script>
+//$(window).bind('beforeunload', function(){
+//    return 'Are you sure you want to leave?';
+//});
+</script>
+{% include 'footer-bar.html' %}

@@ -1,0 +1,59 @@
+<?php
+
+if (!defined('IN_CORE_SYSTEM')){die('INVALID DIRECT ACCESS');}
+
+$app->group('/guest', function(){
+    
+    $this->map(['get', 'post'], '/login', function ($request, $response, $args) {
+        $twigVar = ['title' => 'Login', 'error' => false];
+        if($request->isPost()){
+            $params = $request->getParsedBody();
+            $user = null;
+            $user = UserQuery::create()->findOneByEmail($params['email']);
+            if($user != false){
+                if(Core::verifyHashing($params['password'], $user->getPassword())){
+                    Core::loginUser($user);
+                    $response = $response->withStatus(302)->withHeader('Location', $this->router->pathFor(HDB::ROLE_GUEST.'#public@redirect'));
+                    return $response;
+                }
+            }
+            $twigVar['error'] = true;
+        }
+        return $this->view->render($response, 'login.html', $twigVar);
+    })->setName(HDB::ROLE_GUEST.'#guest@login.login');
+    
+    $this->map(['get', 'post'], '/register/user', function ($request, $response, $args){
+        $twigVar = ['title' => 'Login', 'error' => false, 'msg' => ''];
+        if($request->isPost()){
+            $params = $request->getParsedBody();
+            $user = null;
+            $user = UserQuery::create()->findOneByEmail($params['email']);
+            if($user !== null){
+                $twigVar['error'] = true;
+                $twigVar['msg'] = 'Email is registered. Please login.';
+                return $this->view->render($response, 'register-normal-user.html', $twigVar);
+            }
+            $user = UserQuery::create()->findOneByUsername($params['username']);
+            if($user !== null){
+                $twigVar['error'] = true;
+                $twigVar['msg'] = 'Username is registered. Please try another username.';
+                return $this->view->render($response, 'register-normal-user.html', $twigVar);
+            }
+            $user = new NormalUser();
+            $user->setEmail($params['email']);
+            $user->setPassword(Core::createHashing($params['password']));
+            $user->setUsername($params['username']);
+            $user->save();
+            Core::loginUser($user);
+            $response = $response->withStatus(302)->withHeader('Location', $this->router->pathFor(HDB::ROLE_GUEST.'#public@redirect'));
+            return $response;
+        }
+        return $this->view->render($response, 'register-normal-user.html', $twigVar);
+    })->setName(HDB::ROLE_GUEST.'#guest@register.normalUser');
+    
+    $this->map(['get', 'post'], '/register/realtor', function ($request, $response, $args){
+        $twigVar = ['title' => 'Login', 'error' => false];
+        
+        return $this->view->render($response, 'login.html', $twigVar);
+    })->setName(HDB::ROLE_GUEST.'#guest@register.realtor');
+});

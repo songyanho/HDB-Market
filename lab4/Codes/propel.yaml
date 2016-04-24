@@ -1,0 +1,23 @@
+propel:
+    database:
+        connections:
+            hdb:
+                adapter: mysql
+                classname: Propel\Runtime\Connection\ConnectionWrapper
+#                dsn: "mysql:host=172.21.148.163:3306;dbname=hdb"
+                dsn: "mysql:host=localhost:8889;dbname=hdb"
+                user: root
+                password: root
+                attributes:
+                settings:
+                    charset: utf8
+                    queries:
+                        utf8: "SET NAMES utf8 COLLATE utf8_unicode_ci, COLLATION_CONNECTION = utf8_unicode_ci, COLLATION_DATABASE = utf8_unicode_ci, COLLATION_SERVER = utf8_unicode_ci"
+    runtime:
+        defaultConnection: hdb
+        connections:
+            - hdb
+    generator:
+        defaultConnection: hdb
+        connections:
+            - hdb

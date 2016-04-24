@@ -1,0 +1,125 @@
+@import url(http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600|Open+Sans:400,600,300|Arapey|Varela+Round);
+body {
+  font-family: 'Open Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+li > a {
+  font-family: 'Varela Round', "Helvetica Neue", Helvetica, Arial, sans-serif;
+  letter-spacing: -0.2px;
+}
+p {
+  font-weight: 300;
+  font-family: 'Source Sans Pro', "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+.cover p {
+  font-weight: 400;
+}
+.cover p.lead {
+  font-weight: 300;
+}
+.lead {
+  font-family: 'Source Sans Pro', "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  letter-spacing: -0.2px;
+}
+h1 small,
+h2 small,
+h3 small,
+h4 small,
+h5 small,
+h6 small,
+.h1 small,
+.h2 small,
+.h3 small,
+.h4 small,
+.h5 small,
+.h6 small {
+  font-family: 'Varela Round', "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 60%;
+  letter-spacing: -0.2px;
+}
+.navbar-brand {
+  font-weight: 600;
+  letter-spacing: -0.7px;
+  font-family: 'Source Sans Pro', "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 21px !important;
+}
+.property-facilities {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.property-facilities li {
+  margin-bottom: 5px;
+}
+@media (min-width: 768px) {
+  .property-facilities li:last-of-type {
+    margin-bottom: 0;
+  }
+}
+.property-facilities li i {
+  display: inline-block;
+  background: #f5f5f5;
+  font-size: 20px;
+  padding: 2px 6px;
+  border-radius: 3px;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+.property-facilities li i.primary {
+  background-color: #26a69a;
+  color: #ffffff;
+}
+.sidebar .sidebar-block.property-meta {
+  padding: 0;
+}
+#content .property-meta {
+  background-color: #fff;
+  border: 1px solid #e2e9e6;
+  margin-bottom: 20px;
+}
+.property-meta ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.property-meta .property-meta-item {
+  padding: 16px;
+}
+@media (min-width: 992px) {
+  .property-meta .property-meta-item {
+    border-right: 1px solid #eeeeee;
+    display: inline-block;
+  }
+  .property-meta .property-meta-item:last-of-type {
+    border-right: none;
+  }
+}
+@media (max-width: 991px) {
+  .property-meta .property-meta-item {
+    border-bottom: 1px solid #eeeeee;
+  }
+  .property-meta .property-meta-item:last-of-type {
+    border-bottom: none;
+  }
+}
+.sidebar-skin-dark .property-meta .property-meta-item {
+  border-color: #2e2e2e;
+}
+.sidebar-skin-white .property-meta .property-meta-item {
+  border-color: #ebebeb;
+}
+.page-section {
+  padding: 30px 0;
+}
